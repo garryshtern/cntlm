@@ -26,4 +26,5 @@ cntlm*.tar.bz2
 .cproject
 .project
 .settings/
+containers
 rpm/BUILD*

@@ -749,7 +749,7 @@ int main(int argc, char **argv) {
 	cauth = zmalloc(MINIBUF_SIZE);
 
 	int syslog_debug = 0;
-	openlog("cntlm", LOG_CONS | LOG_PERROR, LOG_DAEMON);
+	openlog("cntlm", LOG_PERROR, LOG_DAEMON);
 
 #if config_endian == 0
 	syslog(LOG_INFO, "Starting cntlm version " VERSION " for BIG endian\n");
