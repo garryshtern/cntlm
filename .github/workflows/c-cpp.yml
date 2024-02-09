@@ -55,7 +55,7 @@ jobs:
         sudo make install
         sudo make uninstall
         make distclean
-    - name: Verify RHEL + SLES package creattion and installation
+    - name: Verify RHEL + SLES package creation and installation
       run: |
         docker build -f containers/Dockerfile.rhel -t localhost/cntlm-rpm-packaging:rhel .
         docker build -f containers/Dockerfile.sles -t localhost/cntlm-rpm-packaging:sles .
