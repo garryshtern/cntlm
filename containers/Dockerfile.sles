@@ -1,0 +1,12 @@
+# Dockerfile for building + testing the RPM under SLES 15
+FROM registry.suse.com/suse/sle15:latest
+
+# Install all build dependencies
+RUN zypper install -y make gcc systemd rpm-build git shadow && zypper clean -a
+
+RUN git config --global --add safe.directory /source
+
+VOLUME /source
+WORKDIR /source
+
+ENTRYPOINT [ "/bin/bash", "-c" ]

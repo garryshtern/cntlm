@@ -18,7 +18,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install stuff for creating packages
-      run: sudo apt install -y fakeroot rpm dpkg debhelper systemd
+      run: sudo apt install -y fakeroot dpkg debhelper
     - name: Install packages required for optional configurations of cntlm
       run: sudo apt install -y libkrb5-dev
     - name: Install further tools (clang-tools for scan-build)
@@ -47,15 +47,21 @@ jobs:
         make DEBUG=1
         ./cntlm -h
         make distclean
-    - name: Verify package creation and installation
+    - name: Verify debian package creation and installation
       run: |
         ./configure
-        make rpm
         make deb
         make clean
         sudo make install
         sudo make uninstall
         make distclean
+    - name: Verify RHEL + SLES package creattion and installation
+      run: |
+        docker build -f containers/Dockerfile.rhel -t localhost/cntlm-rpm-packaging:rhel .
+        docker build -f containers/Dockerfile.sles -t localhost/cntlm-rpm-packaging:sles .
+        docker run -v .:/source localhost/cntlm-rpm-packaging:rhel './configure && make rpm && rpm -iv cntlm*.rpm && cntlm -h'
+        make distclean
+        docker run -v .:/source localhost/cntlm-rpm-packaging:sles './configure && make rpm && rpm -iv cntlm*.rpm && cntlm -h'
     - name: Build via scan-build
       run: |
         ./configure
